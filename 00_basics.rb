@@ -36,3 +36,5 @@
 # nil
 # nil == false
 # return of a method without implicit return
+
+String.ancestors
