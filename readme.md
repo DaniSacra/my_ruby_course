@@ -16,28 +16,16 @@
 
 ## Basics
 
-* Everything is a object
+* Everything is an object
 
     ```Ruby
-    # good
-    def some_method
-      do_something
-    end
-
-    # bad - four spaces
-    def some_method
-        do_something
-    end
+    p 1.methods
+    p 2.between? 1,3
+    p 2.even?
+    p 1+2
+    p 1.+(2)
+    p 3 == 3
     ```
-
-    ```Ruby
-    sum = 1 + 2
-    a, b = 1, 2
-    1 > 2 ? true : false; puts 'Hi'
-    [1, 2, 3].each { |e| puts e }
-    ```
-
-
 
 ## Variables
 
@@ -66,6 +54,17 @@
      num = 1
      num += 10
      ```
+
+* Setting values
+
+    ```Ruby
+    sum = 1 + 2
+    a, b = 1, 2
+    name = 'Daniel'
+    res = 1 > 2 ? true : false
+    c, d, e = [1, 2, 3]
+    ```
+
 
 ## Strings
 
