@@ -1,32 +1,24 @@
-> Learn to program in ODS' [Online Dev School](https://onlinedevschool.com) program where we train new web developers in today's hottest technologies like HTML5, CSS3, Javascript/E6 and Ruby!
+> I'm doing this course for fun since I'm a Ruby enthusiastic! This material is under construction.
 
-# Dreamr's Ruby Style Guide
+# DaniSacra Ruby Course
 
 ## Table of Contents
 
-* [Source Code Layout](#source-code-layout)
-* [Syntax](#syntax)
-* [Naming](#naming)
-* [Comments](#comments)
-* [Annotations](#annotations)
-* [Classes](#classes)
-* [Exceptions](#exceptions)
-* [Collections](#collections)
+* [Basics](#basics)
+* [Variables](#variables)
 * [Strings](#strings)
-* [Regular Expressions](#regular-expressions)
-* [Percent Literals](#percent-literals)
-* [Metaprogramming](#metaprogramming)
-* [Misc](#misc)
+* [Conditional](#conditional)
+* [Loops](#loops)
+* [Arrays](#arrays)
+* [Hashes](#hashes)
+* [Classes](#classes)
+* [Methods](#methods)
 
-## Source Code Layout
+## Basics
 
-> Nearly everybody is convinced that every style but their own is
-> ugly and unreadable. Leave out the "but their own" and they're
-> probably right... <br/>
-> -- Jerry Coffin (on indentation)
+  Ruby is an interpreted, high-level, general-purpose programming language. It was designed and developed in the mid-1990s by Yukihiro "Matz" Matsumoto in Japan.
+  Ruby is dynamically typed and uses garbage collection. It supports multiple programming paradigms, including procedural, object-oriented, and functional programming. According to the creator, Ruby was influenced by Perl, Smalltalk, Eiffel, Ada, BASIC, and Lisp.
 
-* Use `UTF-8` as the source file encoding.
-* Use two **spaces** per indentation level.
 
     ```Ruby
     # good
@@ -40,19 +32,6 @@
     end
     ```
 
-* Use Unix-style line endings. (*BSD/Solaris/Linux/OSX users are covered by default,
-  Windows users have to be extra careful.)
-    * If you're using Git you might want to add the following
-    configuration setting to protect your project from Windows line
-    endings creeping in:
-
-        ```$ git config --global core.autocrlf true```
-
-* Use spaces around operators, after commas, colons and semicolons, around `{`
-  and before `}`. Whitespace might be (mostly) irrelevant to the Ruby
-  interpreter, but its proper use is the key to writing easily
-  readable code.
-
     ```Ruby
     sum = 1 + 2
     a, b = 1, 2
@@ -60,107 +39,9 @@
     [1, 2, 3].each { |e| puts e }
     ```
 
-    The only exception is when using the exponent operator:
 
-    ```Ruby
-    # bad
-    e = M * c ** 2
 
-    # good
-    e = M * c**2
-    ```
-
-* No spaces after `(`, `[` or before `]`, `)`.
-
-    ```Ruby
-    some(arg).other
-    [1, 2, 3].length
-    ```
-
-* Indent `when` as deep as `case`. I know that many would disagree
-  with this one, but it's the style established in both the "The Ruby
-  Programming Language" and "Programming Ruby".
-
-    ```Ruby
-    case
-    when song.name == 'Misty'
-      puts 'Not again!'
-    when song.duration > 120
-      puts 'Too long!'
-    when Time.now.hour > 21
-      puts "It's too late"
-    else
-      song.play
-    end
-
-    kind = case year
-           when 1850..1889 then 'Blues'
-           when 1890..1909 then 'Ragtime'
-           when 1910..1929 then 'New Orleans Jazz'
-           when 1930..1939 then 'Swing'
-           when 1940..1950 then 'Bebop'
-           else 'Jazz'
-           end
-    ```
-
-* Use empty lines between `def`s and to break up a method into logical
-  paragraphs.
-
-    ```Ruby
-    def some_method
-      data = initialize(options)
-
-      data.manipulate!
-
-      data.result
-    end
-
-    def some_method
-      result
-    end
-    ```
-
-* Align the parameters of a method call if they span over multiple lines.
-
-    ```Ruby
-    # starting point (line is too long)
-    def send_mail(source)
-      Mailer.deliver(to: 'bob@example.com', from: 'us@example.com', subject: 'Important message', body: source.text)
-    end
-
-    # bad (normal indent)
-    def send_mail(source)
-      Mailer.deliver(
-        to: 'bob@example.com',
-        from: 'us@example.com',
-        subject: 'Important message',
-        body: source.text)
-    end
-
-    # bad (double indent)
-    def send_mail(source)
-      Mailer.deliver(
-          to: 'bob@example.com',
-          from: 'us@example.com',
-          subject: 'Important message',
-          body: source.text)
-    end
-
-    # good
-    def send_mail(source)
-      Mailer.deliver(to: 'bob@example.com',
-                     from: 'us@example.com',
-                     subject: 'Important message',
-                     body: source.text)
-    end
-    ```
-
-* Use RDoc and its conventions for API documentation.  Don't put an
-  empty line between the comment block and the `def`.
-* Keep lines fewer than 80 characters.
-* Avoid trailing whitespace.
-
-## Syntax
+## Variables
 
 * Use `def` with parentheses when there are arguments. Omit the
   parentheses when the method doesn't accept any arguments.
@@ -586,7 +467,7 @@ syntax.
     result = hash.map { |_, v| v + 1 }
     ```
 
-## Naming
+## Strings
 
 > The only real difficulties in programming are cache invalidation and
 > naming things. <br/>
@@ -665,7 +546,7 @@ syntax.
   reason the use of `select` is encouraged over `find_all` is that it
   goes together nicely with `reject` and its name is pretty self-explanatory.
 
-## Comments
+## Conditionals
 
 > Good code is its own best documentation. As you're about to add a
 > comment, ask yourself, "How can I improve the code so that this
@@ -692,7 +573,7 @@ at all.
 * Avoid writing comments to explain bad code. Refactor the code to
   make it self-explanatory. (Do or do not - there is no try. --Yoda)
 
-## Annotations
+## Loops
 
 * Annotations should usually be written on the line immediately above
   the relevant code.
@@ -732,7 +613,7 @@ at all.
 * Use other custom annotation keywords if it feels appropriate, but be
   sure to document them in your project's `README` or similar.
 
-## Classes
+## Arrays
 
 * When designing class hierarchies make sure that they conform to the
   [Liskov Substitution Principle](http://en.wikipedia.org/wiki/Liskov_substitution_principle).
@@ -926,7 +807,7 @@ in *Ruby* now, not in *Python*.
     end
     ```
 
-## Exceptions
+## Hashes
 
 * Signal exceptions using the `fail` keyword. Use `raise` only when
   catching an exception and re-raising it (because here you're not failing, but explicitly and purposefully raising an exception).
@@ -1107,7 +988,7 @@ block.
 * Favor the use of exceptions for the standard library over
 introducing new exception classes.
 
-## Collections
+## Classes
 
 * Prefer literal array and hash creation notation (unless you need to
 pass parameters to their constructors, that is).
@@ -1169,7 +1050,7 @@ syntax.
 * Rely on the fact that hashes in 1.9 are ordered.
 * Never modify a collection while traversing it.
 
-## Strings
+## Methods
 
 * Prefer string interpolation instead of string concatenation:
 
@@ -1236,209 +1117,3 @@ syntax.
       html << "<p>#{paragraph}</p>"
     end
     ```
-
-## Regular Expressions
-
-* Don't use regular expressions if you just need plain text search in string:
-  `string['text']`
-* For simple constructions you can use regexp directly through string index.
-
-    ```Ruby
-    match = string[/regexp/]             # get content of matched regexp
-    first_group = string[/text(grp)/, 1] # get content of captured group
-    string[/text (grp)/, 1] = 'replace'  # string => 'text replace'
-    ```
-
-* Use non capturing groups when you don't use captured result of parenthesis.
-
-    ```Ruby
-    /(first|second)/   # bad
-    /(?:first|second)/ # good
-    ```
-
-* Avoid using $1-9 as it can be hard to track what they contain. Named groups
-  can be used instead.
-
-    ```Ruby
-    # bad
-    /(regexp)/ =~ string
-    ...
-    process $1
-
-    # good
-    /(?<meaningful_var>regexp)/ =~ string
-    ...
-    process meaningful_var
-    ```
-
-* Character classes have only few special characters you should care about:
-  `^`, `-`, `\`, `]`, so don't escape `.` or brackets in `[]`.
-
-* Be careful with `^` and `$` as they match start/end of line, not string endings.
-  If you want to match the whole string use: `\A` and `\z` (not to be
-  confused with `\Z` which is the equivalent of `/\n?\z/`).
-
-    ```Ruby
-    string = "some injection\nusername"
-    string[/^username$/]   # matches
-    string[/\Ausername\z/] # don't match
-    ```
-
-* Use `x` modifier for complex regexps. This makes them more readable and you
-  can add some useful comments. Just be careful as spaces are ignored.
-
-    ```Ruby
-    regexp = %r{
-      start         # some text
-      \s            # white space char
-      (group)       # first group
-      (?:alt1|alt2) # some alternation
-      end
-    }x
-    ```
-
-* For complex replacements `sub`/`gsub` can be used with block or hash.
-
-## Percent Literals
-
-* Use `%w` freely.
-
-    ```Ruby
-    STATES = %w(draft open closed)
-    ```
-
-* Use `%()` for single-line strings which require both interpolation
-  and embedded double-quotes. For multi-line strings, prefer heredocs.
-
-    ```Ruby
-    # bad (no interpolation needed)
-    %(<div class="text">Some text</div>)
-    # should be '<div class="text">Some text</div>'
-
-    # bad (no double-quotes)
-    %(This is #{quality} style)
-    # should be "This is #{quality} style"
-
-    # bad (multiple lines)
-    %(<div>\n<span class="big">#{exclamation}</span>\n</div>)
-    # should be a heredoc.
-
-    # good (requires interpolation, has quotes, single line)
-    %(<tr><td class="name">#{name}</td>)
-    ```
-
-* Use `%r` only for regular expressions matching *more than* one '/' character.
-
-    ```Ruby
-    # bad
-    %r(\s+)
-
-    # still bad
-    %r(^/(.*)$)
-    # should be /^\/(.*)$/
-
-    # good
-    %r(^/blog/2011/(.*)$)
-    ```
-
-* Avoid `%q`, `%Q`, `%x`, `%s`, and `%W`.
-
-* Prefer `()` as delimiters for all `%` literals.
-
-## Metaprogramming
-
-* Do not mess around in core classes when writing LIBRARIES. (Do not monkey
-patch them.)
-
-* When writing your APPLICATION, extend core classes freely, but do so with documentation and the principle of least surprise.
-
-* The block form of `class_eval` is preferable to the string-interpolated form.
-  - when you use the string-interpolated form, always supply `__FILE__` and `__LINE__`, so that your backtraces make sense:
-
-    ```ruby
-    class_eval 'def use_relative_model_naming?; true; end', __FILE__, __LINE__
-    ```
-
-  - `define_method` is preferable to `class_eval{ def ... }`
-
-* When using `class_eval` (or other `eval`) with string interpolation, add a comment block showing its appearance if interpolated (a practice I learned from the rails code):
-
-    ```ruby
-    # from activesupport/lib/active_support/core_ext/string/output_safety.rb
-    UNSAFE_STRING_METHODS.each do |unsafe_method|
-      if 'String'.respond_to?(unsafe_method)
-        class_eval <<-EOT, __FILE__, __LINE__ + 1
-          def #{unsafe_method}(*args, &block)       # def capitalize(*args, &block)
-            to_str.#{unsafe_method}(*args, &block)  #   to_str.capitalize(*args, &block)
-          end                                       # end
-
-          def #{unsafe_method}!(*args)              # def capitalize!(*args)
-            @dirty = true                           #   @dirty = true
-            super                                   #   super
-          end                                       # end
-        EOT
-      end
-    end
-    ```
-
-* avoid using `method_missing` for metaprogramming. Backtraces become messy; the behavior is not listed in `#methods`; misspelled method calls might silently work (`nukes.launch_state = false`). Consider using delegation, proxy, or `define_method` instead.  If you must, use `method_missing`,
-  - be sure to [also define `respond_to?`](http://devblog.avdi.org/2011/12/07/defining-method_missing-and-respond_to-at-the-same-time/)
-  - only catch methods with a well-defined prefix, such as `find_by_*` -- make your code as assertive as possible.
-  - call `super` at the end of your statement
-  - delegate to assertive, non-magical methods:
-
-    ```ruby
-    # bad
-    def method_missing?(meth, *args, &block)
-      if /^find_by_(?<prop>.*)/ =~ meth
-        # ... lots of code to do a find_by
-      else
-        super
-      end
-    end
-
-    # good
-    def method_missing?(meth, *args, &block)
-      if /^find_by_(?<prop>.*)/ =~ meth
-        find_by(prop, *args, &block)
-      else
-        super
-      end
-    end
-
-    # best of all, though, would to define_method as each findable attribute is declared
-    ```
-
-## Misc
-
-* Write `ruby -w` safe code.
-* Avoid hashes as optional parameters. Does the method do too much?
-* Avoid methods longer than 10 LOC (lines of code). Ideally, most methods will be shorter than
-  5 LOC. Empty lines do not contribute to the relevant LOC.
-* Avoid parameter lists longer than three or four parameters.
-* If you really have to, add "global" methods to Kernel and make them private.
-* Use class instance variables instead of global variables.
-
-    ```Ruby
-    #bad
-    $foo_bar = 1
-
-    #good
-    class Foo
-      class << self
-        attr_accessor :bar
-      end
-    end
-
-    Foo.bar = 1
-    ```
-
-* Avoid `alias` when `alias_method` will do.
-* Use `OptionParser` for parsing complex command line options and
-`ruby -s` for trivial command line options.
-* Code in a functional way, avoiding mutation when that makes sense.
-* Avoid needless metaprogramming, use it for better organized code.
-* Do not mutate arguments unless that is the purpose of the method.
-* Avoid more than three levels of block nesting.
-* Be consistent. In an ideal world, be consistent with these guidelines.
-* Use common sense.
