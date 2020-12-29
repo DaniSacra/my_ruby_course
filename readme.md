@@ -43,7 +43,7 @@
 
 ## Variables
 
-* Use `def` with parentheses when there are arguments. Omit the
+  Use `def` with parentheses when there are arguments. Omit the
   parentheses when the method doesn't accept any arguments.
 
      ```Ruby
