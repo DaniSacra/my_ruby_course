@@ -41,535 +41,71 @@
 
 ## Variables
 
-* Use `def` with parentheses when there are arguments. Omit the
-  parentheses when the method doesn't accept any arguments.
+* Types
 
      ```Ruby
-     def some_method
-       # body omitted
-     end
-
-     def some_method_with_arguments(arg1, arg2)
-       # body omitted
-     end
+     name = 'Daniel'   # Strings
+     age = 42          # Integer
+     weight = 89.9     # Float
+     is_tall = true    # Boolean
      ```
 
-* Never use `for`, unless you know exactly why. Most of the time iterators
-  should be used instead. `for` is implemented in terms of `each` (so
-  you're adding a level of indirection), but with a twist - `for`
-  doesn't introduce a new scope (unlike `each`) and variables defined
-  in its block will be visible outside it.
-
-    ```Ruby
-    arr = [1, 2, 3]
-
-    # bad
-    for elem in arr do
-      puts elem
-    end
-
-    # good
-    arr.each { |elem| puts elem }
-    ```
-
-* Never use `then` for multi-line `if/unless`.
-
-    ```Ruby
-    # bad
-    if some_condition then
-      # body omitted
-    end
-
-    # good
-    if some_condition
-      # body omitted
-    end
-    ```
-
-* Favor the ternary operator(`?:`) over `if/then/else/end` constructs.
-  It's more common and obviously more concise.
-
-    ```Ruby
-    # bad
-    result = if some_condition then something else something_else end
-
-    # good
-    result = some_condition ? something : something_else
-    ```
-
-* Use one expression per branch in a ternary operator. This
-  also means that ternary operators must not be nested. Prefer
-  `if/else` constructs in these cases.
-
-    ```Ruby
-    # bad
-    some_condition ? (nested_condition ? nested_something : nested_something_else) : something_else
-
-    # good
-    if some_condition
-      nested_condition ? nested_something : nested_something_else
-    else
-      something_else
-    end
-    ```
-
-* Never use `if x: ...` - it is removed in Ruby 1.9. Use
-  the ternary operator instead.
-
-    ```Ruby
-    # bad
-    result = if some_condition: something else something_else end
-
-    # good
-    result = some_condition ? something : something_else
-    ```
-
-* Never use `if x; ...`. Use the ternary operator instead.
-
-* Use `when x then ...` for one-line cases. The alternative syntax
-  `when x: ...` is removed in Ruby 1.9.
-
-* Never use `when x; ...`. See the previous rule.
-
-* Use `&&/||` for boolean expressions, `and/or` for control flow.  (Rule
-  of thumb: If you have to use outer parentheses, you are using the
-  wrong operators.)
-
-    ```Ruby
-    # boolean expression
-    if some_condition && some_other_condition
-      do_something
-    end
-
-    # control flow
-    document.saved? or document.save!
-    ```
-
-* Avoid multi-line `?:` (the ternary operator), use `if/unless` instead.
-
-* Favor modifier `if/unless` usage when you have a single-line
-  body. Another good alternative is the usage of control flow `and/or`.
-
-    ```Ruby
-    # bad
-    if some_condition
-      do_something
-    end
-
-    # good
-    do_something if some_condition
-
-    # another good option
-    some_condition and do_something
-    ```
-
-* Favor `unless` over `if` for negative conditions (or control
-  flow `or`).
-
-    ```Ruby
-    # bad
-    do_something if !some_condition
-
-    # good
-    do_something unless some_condition
-
-    # another good option
-    some_condition or do_something
-    ```
-
-* Never use `unless` with `else`. Rewrite these with the positive case first.
-
-    ```Ruby
-    # bad
-    unless success?
-      puts 'failure'
-    else
-      puts 'success'
-    end
-
-    # good
-    if success?
-      puts 'success'
-    else
-      puts 'failure'
-    end
-    ```
-
-* Never have an `if` statement with an `elsif` that does not include an `else`
-
-    ```Ruby
-    # bad
-    puts if is_temp?(file)
-      'temp'
-    elsif is_perm?(file)
-      'perm'
-    end
-
-    # good
-    puts if is_temp?(file)
-      'temp'
-    elsif is_perm?(file)
-      'perm'
-    else
-      raise 'FileType not supported'
-    end
-    ```
-
-* Never have an `case` statement that does not include an `else`
-  
-    ```Ruby
-    # bad
-    kind = case year
-           when 1850..1889 then 'Blues'
-           when 1890..1909 then 'Ragtime'
-           when 1910..1929 then 'New Orleans Jazz'
-           when 1930..1939 then 'Swing'
-           when 1940..1950 then 'Bebop'
-           end
-           
-     # good
-     kind = case year
-            when 1850..1889 then 'Blues'
-            when 1890..1909 then 'Ragtime'
-            when 1910..1929 then 'New Orleans Jazz'
-            when 1930..1939 then 'Swing'
-            when 1940..1950 then 'Bebop'
-            else
-              raise 'Year in music not accounted for'
-            end
-    ```
-           
-* Don't use parentheses around the condition of an `if/unless/while`,
-  unless the condition contains an assignment (see "Using the return
-  value of `=`" below).
-
-    ```Ruby
-    # bad
-    if (x > 10)
-      # body omitted
-    end
-
-    # good
-    if x > 10
-      # body omitted
-    end
-
-    # ok
-    if (x = self.next_value)
-      # body omitted
-    end
-    ```
-
-* Favor modifier `while/until` usage when you have a single-line
-  body.
-
-    ```Ruby
-    # bad
-    while some_condition
-      do_something
-    end
-
-    # good
-    do_something while some_condition
-    ```
-
-* Favor `until` over `while` for negative conditions.
-
-    ```Ruby
-    # bad
-    do_something while !some_condition
-
-    # good
-    do_something until some_condition
-    ```
-
-* Omit parentheses around parameters for methods that are part of an
-  internal DSL (e.g. Rake, Rails, RSpec), methods that are with
-  "keyword" status in Ruby (e.g. `attr_reader`, `puts`) and attribute
-  access methods. Use parentheses around the arguments of all other
-  method invocations.
-
-    ```Ruby
-    class Person
-      attr_reader :name, :age
-
-      # omitted
-    end
-
-    temperance = Person.new('Temperance', 30)
-    temperance.name
-
-    puts temperance.age
-
-    x = Math.sin(y)
-    array.delete(e)
-    ```
-
-* Prefer `{...}` over `do...end` for single-line blocks.  Avoid using
-  `{...}` for multi-line blocks (multiline chaining is always
-  ugly). Always use `do...end` for "control flow" and "method
-  definitions" (e.g. in Rakefiles and certain DSLs).  Avoid `do...end`
-  when chaining.
-
-    ```Ruby
-    names = ['Bozhidar', 'Steve', 'Sarah']
-
-    # good
-    names.each { |name| puts name }
-
-    # bad
-    names.each do |name|
-      puts name
-    end
-
-    # good
-    names.select { |name| name.start_with?('S') }.map { |name| name.upcase }
-
-    # bad
-    names.select do |name|
-      name.start_with?('S')
-    end.map { |name| name.upcase }
-    ```
-
-    Some will argue that multiline chaining would look OK with the use of {...}, but they should
-    ask themselves - it this code really readable and can't the blocks contents be extracted into
-    nifty methods.
-
-* Avoid `return` where not required.
-
-    ```Ruby
-    # bad
-    def some_method(some_arr)
-      return some_arr.size
-    end
-
-    # good
-    def some_method(some_arr)
-      some_arr.size
-    end
-    ```
-
-* Use spaces around the `=` operator when assigning default values to method parameters:
-
-    ```Ruby
-    # bad
-    def some_method(arg1=:default, arg2=nil, arg3=[])
-      # do something...
-    end
-
-    # good
-    def some_method(arg1 = :default, arg2 = nil, arg3 = [])
-      # do something...
-    end
-    ```
-
-    While several Ruby books suggest the first style, the second is much more prominent
-    in practice (and arguably a bit more readable).
-
-* Avoid line continuation (\\) where not required. In practice, avoid using
-  line continuations at all.
-
-    ```Ruby
-    # bad
-    result = 1 - \
-             2
-
-    # good (but still ugly as hell)
-    result = 1 \
-             - 2
-    ```
-
-* Using the return value of `=` (an assignment) is ok, but surround the
-  assignment with parenthesis.
-
-    ```Ruby
-    # good - shows intented use of assignment
-    if (v = array.grep(/foo/)) ...
-
-    # bad
-    if v = array.grep(/foo/) ...
-
-    # also good - shows intended use of assignment and has correct precedence.
-    if (v = self.next_value) == 'hello' ...
-    ```
-
-* Use `||=` freely to initialize variables.
-
-    ```Ruby
-    # set name to Bozhidar, only if it's nil or false
-    name ||= 'Bozhidar'
-    ```
-
-* Don't use `||=` to initialize boolean variables. (Consider what
-would happen if the current value happened to be `false`.)
-
-    ```Ruby
-    # bad - would set enabled to true even if it was false
-    enabled ||= true
-
-    # good
-    enabled = true if enabled.nil?
-    ```
-
-* Avoid using Perl-style special variables (like `$0-9`, `$``,
-  etc. ). They are quite cryptic and their use in anything but
-  one-liner scripts is discouraged.
-
-* Never put a space between a method name and the opening parenthesis.
-
-    ```Ruby
-    # bad
-    f (3 + 2) + 1
-
-    # good
-    f(3 + 2) + 1
-    ```
-
-* If the first argument to a method begins with an open parenthesis,
-  always use parentheses in the method invocation. For example, write
-`f((3 + 2) + 1)`.
-
-* Always run the Ruby interpreter with the `-w` option so it will warn
-you if you forget either of the rules above!
-
-* When the keys of your hash are symbols use the Ruby 1.9 hash literal
-syntax.
-
-    ```Ruby
-    # bad
-    hash = { :one => 1, :two => 2 }
-
-    # good
-    hash = { one: 1, two: 2 }
-    ```
-
-* Use the new lambda literal syntax.
-
-    ```Ruby
-    # bad
-    lambda = lambda { |a, b| a + b }
-    lambda.call(1, 2)
-
-    # good
-    lambda = ->(a, b) { a + b }
-    lambda.(1, 2)
-    ```
-
-* Use `_` for unused block parameters.
-
-    ```Ruby
-    # bad
-    result = hash.map { |k, v| v + 1 }
-
-    # good
-    result = hash.map { |_, v| v + 1 }
-    ```
+* Calculations
+
+     ```Ruby
+    puts 2 * 3        # Basic Arithmetic: +, -, /, *
+    puts 2**3         # Expoent
+    puts 10 % 3       # Modulus
+    puts 1 + 2 * 3    # Order of operation
+    puts 10 / 3       # Float
+     ```
+
+* Iteration with +=, -=, /=, *=
+
+     ```Ruby
+     num = 1
+     num += 10
+     ```
 
 ## Strings
 
-> The only real difficulties in programming are cache invalidation and
-> naming things. <br/>
-> -- Phil Karlton
-
-* Use `snake_case` for methods and variables.
-* Use `CamelCase` for classes and modules.  (Keep acronyms like HTTP,
-  RFC, XML uppercase.)
-* Use `SCREAMING_SNAKE_CASE` for other constants.
-* The names of predicate methods (methods that return a boolean value)
-  should end in a question mark.
-  (i.e. `Array#empty?`).
-* The names of potentially "dangerous" methods (i.e. methods that modify `self` or the
-  arguments, `exit!` (doesn't run the finalizers like `exit` does), etc.) should end with an exclamation mark if
-  there exists a safe version of that *dangerous* method.
+* Basics
 
     ```Ruby
-    # bad - there is not matching 'safe' method
-    class Person
-      def update!
-      end
-    end
+    greeting = 'Hello Ruby'
 
-    # good
-    class Person
-      def update
-      end
-    end
-
-    # good
-    class Person
-      def update!
-      end
-
-      def update
-      end
-    end
+    puts greeting.size
+    puts greeting[0]
+    puts greeting.include? 'Ruby'
+    puts greeting[1, 3]
+    puts greeting[-1, -4]
     ```
 
-* Define the non-bang (safe) method in terms of the bang (dangerous)
-  one if possible.
+* Interpolation
 
     ```Ruby
-    class Array
-      def flatten_once!
-        res = []
-
-        each do |e|
-          [*e].each { |f| res << f }
-        end
-
-        replace(res)
-      end
-
-      def flatten_once
-        dup.flatten_once!
-      end
-    end
+    a = 1
+    b = 4
+    puts "The number #{a} is less than #{b}"
     ```
 
-* When using `reduce` with short blocks, name the arguments `|a, e|`
-  (accumulator, element).
-* When defining binary operators, name the argument `other`.
+* Search in strings
 
     ```Ruby
-    def +(other)
-      # body omitted
-    end
+    "[Luke:] I can’t believe it. [Yoda:] That is why you fail.".include? 'Yoda'
+    "Ruby is a beautiful language".start_with? 'Ruby'
+    "I can't work with any other language but Ruby".end_with? 'Ruby'
+    "I am a Rubyist".index 'R'
     ```
 
-* Prefer `map` over `collect`, `find` over `detect`, `select` over
-  `find_all`, `reduce` over `inject` and `size` over `length`. This is
-  not a hard requirement; if the use of the alias enhances
-  readability, it's ok to use it. The rhyming methods are inherited from
-  Smalltalk and are not common in other programming languages. The
-  reason the use of `select` is encouraged over `find_all` is that it
-  goes together nicely with `reject` and its name is pretty self-explanatory.
-
-## Conditionals
-
-> Good code is its own best documentation. As you're about to add a
-> comment, ask yourself, "How can I improve the code so that this
-> comment isn't needed?" Improve the code and then document it to make
-> it even clearer. <br/>
-> -- Steve McConnell
-
-* Write self-documenting code and ignore the rest of this section. Seriously!
-* Comments longer than a word are capitalized and use punctuation. Use [one
-  space](http://en.wikipedia.org/wiki/Sentence_spacing) after periods.
-* Avoid superfluous comments.
+* Replace
 
     ```Ruby
-    # bad
-    counter += 1 # increments counter by one
+    "I should look into your problem when I get time".sub('I','We')
+    "I should look into your problem when I get time".gsub('I','We')
+    'RubyIsGreat'.gsub(/[aeiou]/,'1')
+    'Ruby Is Pretty Brilliant'.gsub /[A-Z]/, '0'
     ```
-
-* Keep existing comments up-to-date. An outdated is worse than no comment
-at all.
-
-> Good code is like a good joke - it needs no explanation. <br/>
-> -- Russ Olsen
-
-* Avoid writing comments to explain bad code. Refactor the code to
-  make it self-explanatory. (Do or do not - there is no try. --Yoda)
 
 ## Loops
 

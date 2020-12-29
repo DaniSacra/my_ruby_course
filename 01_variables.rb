@@ -13,7 +13,7 @@ puts 2 * 3        # Basic Arithmetic: +, -, /, *
 puts 2**3         # Expoent
 puts 10 % 3       # Modulus
 puts 1 + 2 * 3    # Order of operation
-puts 10 / 3       # Doubles
+puts 10 / 3       # Float
 
 num = 10
 num += 100        # +=, -=, /=, *=
